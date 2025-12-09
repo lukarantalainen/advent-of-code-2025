@@ -21,6 +21,10 @@ int count_zeroes() {
         }
       }
 
+      else if (pointing == 0) {
+        ans++;
+      }
+
     } else {
       pointing -= nums;
       if (pointing < 0) {
@@ -29,10 +33,10 @@ int count_zeroes() {
           ans++;
         }
       }
-    }
 
-    if (pointing == 0) {
-      ans++;
+      else if (pointing == 0) {
+        ans++;
+      }
     }
   }
   return ans;
