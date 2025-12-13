@@ -40,7 +40,7 @@ int count_zeroes(std::string f) {
 }
 
 int main() {
-  auto input = "inputs\\input.txt";
+  auto input = "inputs\\input01.txt";
   std::cout << count_zeroes(input);
   return 0;
 }
