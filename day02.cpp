@@ -39,9 +39,9 @@ std::vector<std::string> parse_string(std::string f) {
   return ranges;
 }
 
-std::vector<std::tuple<long long, long long>> pair_values(
+std::vector<std::pair<long long, long long>> pair_values(
     std::vector<std::string> input) {
-  std::vector<std::tuple<long long, long long>> range_pairs;
+  std::vector<std::pair<long long, long long>> range_pairs;
   for (auto s : input) {
     int pair_num{0};
     int char_index = 0, length = 0;
@@ -52,7 +52,7 @@ std::vector<std::tuple<long long, long long>> pair_values(
       if (c == '-') {
         first = stoll(s.substr(0, char_index));
         last = stoll(s.substr(char_index, (s.length() - char_index)));
-        range_pairs.push_back(std::make_tuple(first, last));
+        range_pairs.push_back(std::make_pair(first, last));
       }
       length++;
     }
@@ -62,13 +62,13 @@ std::vector<std::tuple<long long, long long>> pair_values(
   return range_pairs;
 }
 
-void count_invalid_ids(std::vector<std::tuple<long long, long long>> input) {
+void count_invalid_ids(std::vector<std::pair<long long, long long>> input) {
   long long total{0};
   for (auto p : input) {
-    auto first = std::get<0>(p);
-    auto last = std::get<1>(p);
+    auto first = p.first;
+    auto second = p.second;
 
-    for (long long i = first; i <= last; i++) {
+    for (long long i = first; i <= second; i++) {
       auto id = std::to_string(i);
       if (id.length() % 2 == 0) {
         auto first_half = id.substr(0, id.length() / 2);
