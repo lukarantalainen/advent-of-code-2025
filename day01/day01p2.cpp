@@ -13,12 +13,10 @@ int count_rotations(std::string filename) {
     int zeroes{0};
     int nums = std::stoi(line.substr(1));
 
-    pointing = (line[0] == 'R') ? pointing : -pointing;
-    std::cout << pointing << "\n";
+    pointing = (line[0] == 'R') ? pointing + nums : pointing - nums;
+    pointing = (pointing % 100 + 100) % 100;
 
-    zeroes += abs(pointing / 100);
-
-    passwd += zeroes;
+    if (pointing == 0) passwd++;
   }
   return passwd;
 }
