@@ -7,9 +7,9 @@ void count_joltage(std::string f) {
   std::string line;
   int joltage{0};
   while (std::getline(input, line)) {
-    int highest{0};
-    int second_highest{0};
-    int list_index{0};
+    int highest{};
+    int second_highest{};
+    int list_index{};
 
     for (auto c : line) {
       if (c > highest && list_index < line.length() - 1) {

@@ -1,4 +1,3 @@
-#include <chrono>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -11,9 +10,9 @@ std::vector<std::string> parse_string(std::string f) {
 
   std::vector<std::string> ranges;
 
-  auto prev_delim{0};
-  auto length{0};
-  auto char_index{0};
+  int prev_delim{};
+  int length{};
+  int char_index{};
   std::string range;
 
   for (auto c : line) {
@@ -39,19 +38,19 @@ std::vector<std::string> parse_string(std::string f) {
   return ranges;
 }
 
-std::vector<std::pair<long long, long long>> pair_values(
+std::vector<std::pair<std::string, std::string>> pair_values(
     std::vector<std::string> input) {
-  std::vector<std::pair<long long, long long>> range_pairs;
+  std::vector<std::pair<std::string, std::string>> range_pairs;
   for (auto s : input) {
-    int pair_num{0};
+    int pair_num{};
     int char_index = 0, length = 0;
-    long long first, last;
+    std::string first, last;
 
     for (auto c : s) {
       char_index++;
       if (c == '-') {
-        first = stoll(s.substr(0, char_index));
-        last = stoll(s.substr(char_index, (s.length() - char_index)));
+        first = s.substr(0, char_index);
+        last = s.substr(char_index, (s.length() - char_index));
         range_pairs.push_back(std::make_pair(first, last));
       }
       length++;
@@ -62,11 +61,11 @@ std::vector<std::pair<long long, long long>> pair_values(
   return range_pairs;
 }
 
-void count_invalid_ids(std::vector<std::pair<long long, long long>> input) {
-  long long total{0};
+void count_invalid_ids(std::vector<std::pair<std::string, std::string>> input) {
+  long long total{};
   for (auto p : input) {
-    auto first = p.first;
-    auto second = p.second;
+    auto first = std::stoll(p.first);
+    auto second = std::stoll(p.second);
 
     for (long long i = first; i <= second; i++) {
       auto id = std::to_string(i);
@@ -86,7 +85,6 @@ void count_invalid_ids(std::vector<std::pair<long long, long long>> input) {
 }
 
 int main() {
-  const auto start = std::chrono::high_resolution_clock::now();
   auto data = parse_string("inputs\\input02.txt");
   auto pairs = pair_values(data);
   count_invalid_ids(pairs);
