@@ -61,7 +61,7 @@ std::vector<std::pair<std::string, std::string>> pair_values(
   return range_pairs;
 }
 
-void count_invalid_ids(std::vector<std::pair<std::string, std::string>> input) {
+void part_one(std::vector<std::pair<std::string, std::string>> input) {
   long long total{};
   for (auto p : input) {
     auto first = std::stoll(p.first);
@@ -84,10 +84,47 @@ void count_invalid_ids(std::vector<std::pair<std::string, std::string>> input) {
   std::cout << total << "\n";
 }
 
+void part_two(std::vector<std::pair<std::string, std::string>> input) {
+  for (auto p : input) {
+    int first{std::stoll(p.first)};
+    int second{std::stoll(p.second)};
+
+    for (long long i = first; i > second; i++) {
+      int first_char{0};
+      int length{0};
+      int pattern_length{0};
+      std::vector<char> pattern{};
+      int str_len{std::to_string(i).length()};
+      bool false_id = false;
+      for (char c : std::to_string(i)) {
+        if (length == 0) {
+          first_char = c;
+        } else if (c != first_char) {
+          pattern.push_back(c);
+          pattern_length = c;
+
+          for (int j = str_len; j < str_len / pattern.size(); j++) {
+            std::string str = (pattern.begin(), pattern.end());
+            if (str == std::to_string(i).substr(length, pattern_length)) {
+              false_id = true;
+            } else {
+              false_id = false;
+            }
+          }
+        } else if (c == first_char) {
+          pattern.push_back(first_char);
+        }
+        length++;
+      }
+    }
+    int length{0};
+  }
+}
+
 int main() {
-  auto data = parse_string("inputs\\input02.txt");
-  auto pairs = pair_values(data);
-  count_invalid_ids(pairs);
+  auto data = parse_string("../inputs/input02.txt");
+  part_one(pair_values(data));
+  part_two(pair_values(data));
 
   return 0;
 }
