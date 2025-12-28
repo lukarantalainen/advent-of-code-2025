@@ -1,6 +1,3 @@
 #include <iostream>
 
-int main() {
-  std::cout << -350 / 100;
-  return 0;
-}
+void hello_world() { std::cout << "Hello World!"; }

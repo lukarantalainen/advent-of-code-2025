@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 
-void count_joltage(std::string f) {
+int part_one(std::string f) {
   std::fstream input(f);
   std::string line;
   int joltage{0};
@@ -17,23 +17,33 @@ void count_joltage(std::string f) {
         second_highest = 0;
       }
 
-      else if (second_highest < c) {
+      else if (c > second_highest) {
         second_highest = c;
       }
-
       list_index++;
     }
-
     std::string jolt_str =
         std::to_string(highest -= '0') + std::to_string(second_highest -= '0');
 
     joltage += std::stoi(jolt_str);
   }
 
-  std::cout << joltage;
+  return joltage;
+}
+
+int part_two(std::string f) {
+  std::fstream input(f);
+  std::string line;
+  long long joltage{0};
+  while (std::getline(input, line)) {
+    continue;
+  }
+  return 0;
 }
 
 int main() {
-  count_joltage("inputs\\input03.txt");
+  std::string input{"../inputs/inpu03.txt"};
+  std::cout << part_one(input) << "\n";
+
   return 0;
 }
