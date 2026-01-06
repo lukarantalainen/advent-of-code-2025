@@ -123,14 +123,9 @@ int count_rolls_recursive(std::set<std::pair<int, int>> roll_coords,
   }
 
   if (accessible == 0) {
-    // reconstruct_grid(grid);
+    reconstruct_grid(new_grid);
     return accessible;
   }
-  //   reconstruct_grid(new_grid);
-  //   for (int i = 0; i < grid[0].size(); i++) {
-  //     std::cout << "-";
-  //   }
-  //   std::cout << "\n";
   return accessible + count_rolls_recursive(new_coords, new_grid);
 }
 
@@ -143,7 +138,7 @@ int part_two(std::string filename) {
 
 int main() {
   auto start{std::chrono::high_resolution_clock::now()};
-  std::string filename = "../inputs/input04.txt";
+  std::string filename = "inputs/input04.txt";
 
   std::cout << part_one(filename) << "\n";
   auto end{std::chrono::high_resolution_clock::now()};

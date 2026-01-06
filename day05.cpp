@@ -85,7 +85,7 @@ int part_two(std::vector<std::pair<ll, ll>> ranges) {
 }
 
 int main() {
-  auto file_data = read_file("../inputs/input05.txt");
+  auto file_data = read_file("inputs/input05.txt");
   auto range_list = file_data.first;
   auto id_list = file_data.second;
 

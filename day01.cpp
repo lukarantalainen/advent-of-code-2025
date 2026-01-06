@@ -3,7 +3,7 @@
 #include <string>
 
 int part_one() {
-  std::string f = "../inputs/input01.txt";
+  std::string f = "inputs/input01.txt";
   std::ifstream input(f);
   std::string line{};
   int ans{0};
@@ -21,7 +21,7 @@ int part_one() {
 }
 
 int part_two() {
-  std::string f = "../inputs/input01.txt";
+  std::string f = "inputs/input01.txt";
   std::ifstream input(f);
   std::string line;
   int ans{0};
