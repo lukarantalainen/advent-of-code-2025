@@ -86,12 +86,6 @@ int count_rolls(std::set<std::pair<int, int>> roll_coords,
   return accessible;
 }
 
-int part_one(std::string filename) {
-  std::vector<std::vector<char>> grid{create_grid(filename)};
-  std::set<std::pair<int, int>> roll_coords{list_coords(grid)};
-  return count_rolls(roll_coords, grid);
-}
-
 int count_rolls_recursive(std::set<std::pair<int, int>> roll_coords,
                           std::vector<std::vector<char>> grid) {
   const int y[]{-1, -1, -1, 0, 1, 1, 1, 0};
@@ -129,25 +123,18 @@ int count_rolls_recursive(std::set<std::pair<int, int>> roll_coords,
   return accessible + count_rolls_recursive(new_coords, new_grid);
 }
 
-int part_two(std::string filename) {
-  std::vector<std::vector<char>> grid{create_grid(filename)};
+namespace day4 {
+const std::string FILENAME = "inputs/input04.txt";
+int part_one() {
+  std::vector<std::vector<char>> grid{create_grid(FILENAME)};
+  std::set<std::pair<int, int>> roll_coords{list_coords(grid)};
+  return count_rolls(roll_coords, grid);
+}
+
+int part_two() {
+  std::vector<std::vector<char>> grid{create_grid(FILENAME)};
   std::set<std::pair<int, int>> coords = list_coords(grid);
   int ans = count_rolls_recursive(coords, grid);
   return ans;
 }
-
-int main() {
-  auto start{std::chrono::high_resolution_clock::now()};
-  std::string filename = "inputs/input04.txt";
-
-  std::cout << part_one(filename) << "\n";
-  auto end{std::chrono::high_resolution_clock::now()};
-  std::chrono::duration<double> diff = end - start;
-  std::cout << diff.count() << "\n";
-
-  std::cout << part_two(filename) << "\n";
-  end = std::chrono::high_resolution_clock::now();
-  diff = end - start;
-  std::cout << diff.count() << "\n";
-  return 0;
-}
+}  // namespace day4

@@ -3,10 +3,20 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#define ll long long
 
-int part_one(std::string f) {
-  std::fstream input(f);
+long long vector_to_long(std::vector<int> input) {
+  long long result{0};
+
+  for (int n : input) {
+    result = (result + n) * 10;
+  }
+  return result / 10;
+}
+
+namespace day3 {
+const std::string FILENAME{"inputs/input03.txt"};
+int part_one() {
+  std::fstream input(FILENAME);
   std::string line;
   int joltage{0};
   while (std::getline(input, line)) {
@@ -34,25 +44,16 @@ int part_one(std::string f) {
   return joltage;
 }
 
-ll vector_to_long(std::vector<int> input) {
-  ll result{0};
-
-  for (int n : input) {
-    result = (result + n) * 10;
-  }
-  return result / 10;
-}
-
-int part_two(std::string f) {
-  std::fstream input(f);
+int part_two() {
+  std::fstream input(FILENAME);
   std::string line;
   int bank_length{12};
-  ll joltage{0};
+  long long joltage{0};
 
   while (std::getline(input, line)) {
     std::vector<int> bank{};
 
-    for (int i{line.length() - 1}; i > 0; i--) {
+    for (auto i{line.length() - 1}; i > 0; i--) {
       int num{line[i] - '0'};
       int lowest{line[line.length() - 1]};
       if (line[i] >= lowest) {
@@ -73,11 +74,4 @@ int part_two(std::string f) {
   }
   return 0;
 }
-
-int main() {
-  std::string input{"inputs/input03.txt"};
-  std::cout << part_one(input) << "\n";
-  part_two(input);
-
-  return 0;
-}
+}  // namespace day3

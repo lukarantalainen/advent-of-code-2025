@@ -3,11 +3,10 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#define ll long long
 
-bool check_repeating(ll num);
+bool check_repeating(long long num);
 
-std::vector<std::string> parse_string(std::string f) {
+std::vector<std::string> parse_string(const std::string& f) {
   std::fstream input(f);
   std::string line;
   std::getline(input, line);
@@ -33,7 +32,7 @@ std::vector<std::string> parse_string(std::string f) {
 }
 
 std::vector<std::pair<std::string, std::string>> pair_values(
-    std::vector<std::string> input) {
+    const std::vector<std::string>& input) {
   std::vector<std::pair<std::string, std::string>> range_pairs;
   for (std::string s : input) {
     int char_index{0};
@@ -49,29 +48,7 @@ std::vector<std::pair<std::string, std::string>> pair_values(
   return range_pairs;
 }
 
-ll part_one(std::vector<std::pair<std::string, std::string>> input) {
-  ll total{0};
-  for (auto p : input) {
-    auto first = std::stoll(p.first);
-    auto second = std::stoll(p.second);
-    for (ll i = first; i <= second; i++) {
-      auto id = std::to_string(i);
-      if (id.length() % 2 == 0) {
-        auto first_half = id.substr(0, id.length() / 2);
-        auto second_half = id.substr(id.length() / 2, id.length() / 2);
-
-        if (first_half == second_half) {
-          total += i;
-        }
-      } else {
-        continue;
-      }
-    }
-  }
-  return total;
-}
-
-bool check_repeating(ll num) {
+bool check_repeating(long long num) {
   std::string id = std::to_string(num);
   bool repeating = false;
   const int id_len = id.length();
@@ -90,12 +67,38 @@ bool check_repeating(ll num) {
   return repeating;
 }
 
-auto part_two(std::vector<std::pair<std::string, std::string>> input) {
-  ll total{0};
+namespace day2 {
+const std::string FILENAME{"inputs/input02.txt"};
+long long part_one() {
+  auto input = pair_values(parse_string(FILENAME));
+  long long total{0};
   for (auto p : input) {
-    ll first{std::stoll(p.first)};
-    ll second{std::stoll(p.second)};
-    for (ll i = first; i <= second; i++) {
+    auto first = std::stoll(p.first);
+    auto second = std::stoll(p.second);
+    for (long long i = first; i <= second; i++) {
+      auto id = std::to_string(i);
+      if (id.length() % 2 == 0) {
+        auto first_half = id.substr(0, id.length() / 2);
+        auto second_half = id.substr(id.length() / 2, id.length() / 2);
+
+        if (first_half == second_half) {
+          total += i;
+        }
+      } else {
+        continue;
+      }
+    }
+  }
+  return total;
+}
+
+long long part_two() {
+  auto input = pair_values(parse_string(FILENAME));
+  long long total{0};
+  for (auto p : input) {
+    long long first{std::stoll(p.first)};
+    long long second{std::stoll(p.second)};
+    for (long long i = first; i <= second; i++) {
       if (check_repeating(i) == true) {
         total += i;
       }
@@ -103,11 +106,4 @@ auto part_two(std::vector<std::pair<std::string, std::string>> input) {
   }
   return total;
 }
-
-int main() {
-  auto data = pair_values(parse_string("inputs/input02.txt"));
-  std::cout << part_one(data) << "\n";
-  std::cout << part_two(data) << "\n";
-
-  return 0;
-}
+}  // namespace day2

@@ -38,14 +38,16 @@ std::vector<std::vector<std::string>> parse_input(std::string filename) {
   return worksheet;
 }
 
+namespace day6 {
+const std::string FILENAME{"inputs/input06.txt"};
 long long part_one() {
-  auto worksheet{parse_input("inputs/input06.txt")};
+  auto worksheet{parse_input(FILENAME)};
   auto m{worksheet.size()};
   auto n{worksheet[0].size()};
   long long ans{0};
 
   for (int column{0}; column < n; column++) {
-    std::string sign = worksheet[m - 1][column];
+    std::string sign{worksheet[m - 1][column]};
     long long sum{std::stoi(worksheet[0][column])};
     for (int line{1}; line < m - 1; line++) {
       if (sign == "+") {
@@ -58,8 +60,4 @@ long long part_one() {
   }
   return ans;
 }
-
-int main() {
-  std::cout << part_one();
-  return 0;
-}
+}  // namespace day6

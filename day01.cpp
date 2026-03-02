@@ -2,9 +2,10 @@
 #include <iostream>
 #include <string>
 
+namespace day1 {
+const std::string FILENAME{"inputs/input01.txt"};
 int part_one() {
-  std::string f = "inputs/input01.txt";
-  std::ifstream input(f);
+  std::ifstream input(FILENAME);
   std::string line{};
   int ans{0};
   auto pointing{50};
@@ -21,8 +22,7 @@ int part_one() {
 }
 
 int part_two() {
-  std::string f = "inputs/input01.txt";
-  std::ifstream input(f);
+  std::ifstream input(FILENAME);
   std::string line;
   int ans{0};
   int pointing{50};
@@ -47,3 +47,4 @@ int part_two() {
   input.close();
   return ans;
 }
+}  // namespace day1

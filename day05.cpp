@@ -4,10 +4,10 @@
 #include <string>
 #include <vector>
 
-#define ll long long
+namespace day5 {
 
-auto pair_ranges(std::vector<std::string> ranges) {
-  std::vector<std::pair<ll, ll>> range_pairs{};
+auto pair_ranges(const std::vector<std::string>& ranges) {
+  std::vector<std::pair<long long, long long>> range_pairs{};
   int hyphen{0};
   for (std::string range : ranges) {
     for (int i{0}; i < range.length(); i++) {
@@ -15,8 +15,9 @@ auto pair_ranges(std::vector<std::string> ranges) {
         hyphen = i;
       }
     }
-    ll first{std::stoll(range.substr(0, hyphen))};
-    ll second{std::stoll(range.substr(hyphen + 1, range.length() - hyphen))};
+    long long first{std::stoll(range.substr(0, hyphen))};
+    long long second{
+        std::stoll(range.substr(hyphen + 1, range.length() - hyphen))};
     range_pairs.push_back(std::make_pair(first, second));
   }
 
@@ -46,8 +47,14 @@ auto read_file(std::string filename) {
   return std::make_pair(ranges, id_list);
 }
 
-int part_one(std::vector<std::pair<ll, ll>> ranges,
-             std::vector<std::string> id_list) {
+const std::string FILENAME{"inputs/input05.txt"};
+
+int part_one() {
+  auto file_data = read_file(FILENAME);
+  auto range_list = file_data.first;
+  auto id_list = file_data.second;
+  auto ranges{pair_ranges(range_list)};
+
   int fresh{0};
   std::set<int> fresh_ids{};
   for (auto pair : ranges) {
@@ -55,7 +62,7 @@ int part_one(std::vector<std::pair<ll, ll>> ranges,
     auto high{pair.second};
 
     for (auto id : id_list) {
-      ll id_num{std::stoll(id)};
+      long long id_num{std::stoll(id)};
 
       if (low <= id_num && id_num <= high) {
         if (fresh_ids.count(id_num) == 0) {
@@ -68,12 +75,16 @@ int part_one(std::vector<std::pair<ll, ll>> ranges,
   return fresh;
 }
 
-int part_two(std::vector<std::pair<ll, ll>> ranges) {
+int part_two() {
+  auto file_data = read_file(FILENAME);
+  auto range_list = file_data.first;
+  auto ranges{pair_ranges(range_list)};
+
   long long fresh{0};
   std::set<int> fresh_ids{};
   for (auto pair : ranges) {
-    ll low{pair.first};
-    ll high{pair.second};
+    long long low{pair.first};
+    long long high{pair.second};
     for (int i = low; i <= high; i++) {
       if (fresh_ids.count(i) == 0) {
         fresh++;
@@ -83,16 +94,4 @@ int part_two(std::vector<std::pair<ll, ll>> ranges) {
   }
   return fresh;
 }
-
-int main() {
-  auto file_data = read_file("inputs/input05.txt");
-  auto range_list = file_data.first;
-  auto id_list = file_data.second;
-
-  auto range_pairs = pair_ranges(range_list);
-
-  std::cout << part_one(range_pairs, id_list) << "\n";
-  std::cout << part_two(range_pairs);
-
-  return 0;
-}
+}  // namespace day5
