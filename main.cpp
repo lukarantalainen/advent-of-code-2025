@@ -1,8 +1,7 @@
 #include <cassert>
 #include <iostream>
-#include <vector>
 #include <string>
-#include <unordered_set>
+#include <array>
 
 #include "solutions.h"
 
@@ -11,34 +10,13 @@ class Solution {
   int lengthOfLongestSubstring(std::string s) {
     int longest{};
     int left{};
-    int right{};
 
-    if (s.length() == 0) return 0;
-
-    std::unordered_set<char> seen{};
-    for (int i{0}; i < s.size(); ++i) {
-      
-      if (seen.count(s[right])) {
-        if (right - left >= longest) {
-          longest = right - left;
-        }
-        
-        for (int j{left}; j < right; ++j) {
-          seen.erase(s[j]);
-          if (s[right] == s[j]) {
-            left = j+1;
-            break;
-          }
-        }
-      }
-      seen.insert(s[right]);
-      ++right;
+    std::array<int, 256> pos {};
+    for (int right{0}; right < s.size(); ++right) {
+      left = std::max(left, pos[s[right]]);
+      pos[s[right]] = right+1;
+      longest = std::max(right-left+1, longest);
     }
-    
-    if (right - left >= longest) {
-      longest = right - left;
-    }
-
     return longest;
   }
 };
@@ -48,9 +26,9 @@ int main() {
 
   Solution s;
 
-  std::cout << s.lengthOfLongestSubstring("") << "\n";
-  std::cout << s.lengthOfLongestSubstring("au") << "\n";
-  std::cout << s.lengthOfLongestSubstring("babcdbaba") << "\n";
+  std::cout << s.lengthOfLongestSubstring("ab") << "\n";
+  std::cout << s.lengthOfLongestSubstring("abcabcbb") << "\n";
+  std::cout << s.lengthOfLongestSubstring("pwwkew") << "\n";
   std::cout << "\n";
 
   return 0;
