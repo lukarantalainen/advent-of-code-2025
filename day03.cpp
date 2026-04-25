@@ -50,19 +50,20 @@ long long part_two() {
   std::fstream input(FILENAME);
   std::string line{};
   const int bank_length{12};
-  
   long long ans{};
 
   while (std::getline(input, line)) {
     std::vector<int> new_bank(bank_length);
 
-    int left{0};
+    int start{0};
     for (int i{0}; i<bank_length; ++i) {
       int largest{0};
-      for (int j{left}; j<line.length(); ++j) {
-        if (line[j]-'0'>largest && bank_length-i<=line.length()-j) {
-          largest = line[j]-'0';
-          left = j+1;
+      for (int j{start}; j<line.length(); ++j) {
+        int num{line[j]-'0'};
+        auto space{bank_length-i<=line.length()-j};
+        if (num>largest && space) {
+          largest = num;
+          start = j+1;
         }
       }
       new_bank[i] = largest;
