@@ -44,34 +44,44 @@ int part_one() {
   return joltage;
 }
 
-int part_two() {
+long long part_two() {
+  int length{};
+
   std::fstream input(FILENAME);
-  std::string line;
-  int bank_length{12};
-  long long joltage{0};
+  std::string line{};
+  const int bank_length{12};
+  
+  long long ans{};
 
   while (std::getline(input, line)) {
-    std::vector<int> bank{};
+    std::vector<int> new_bank(bank_length);
 
-    for (auto i{line.length() - 1}; i > 0; i--) {
-      int num{line[i] - '0'};
-      int lowest{line[line.length() - 1]};
-      if (line[i] >= lowest) {
-        bank.push_back(line[i]);
-      } else if (line[i] < lowest) {
-        lowest = line[i];
+    int left{0};
+    for (int i{0}; i<bank_length; ++i) {
+      int largest{0};
+      for (int j{left}; j<line.length(); ++j) {
+        if (line[j]-'0'>largest && bank_length-i<=line.length()-j) {
+          largest = line[j]-'0';
+          left = j+1;
+        }
       }
+      new_bank[i] = largest;
     }
 
-    std::vector<int> final_bank(bank.end() - bank_length, bank.end());
-
-    std::cout << vector_to_long(final_bank) << "\n";
-    joltage += vector_to_long(final_bank);
-
-    // for (int n : bank) {
-    //   std::cout << n;
-    // }
+    long long sum{};
+    for (auto i : new_bank) {
+      sum*=10;
+      sum+=i;
+    }
+    ans+=sum;
   }
+  return ans;
+}
+
+
+}  // namespace day3
+
+int main() {
+  std::cout << day3::part_two() << "\n";
   return 0;
 }
-}  // namespace day3
