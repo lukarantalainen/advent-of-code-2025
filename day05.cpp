@@ -80,7 +80,7 @@ bool comparison(std::pair<long long, long long> p1, std::pair<long long, long lo
   return p1.first<p2.first;
 }
 
-int part_two() {
+long long part_two() {
   std::fstream input(FILENAME);
   std::string line{};
 
