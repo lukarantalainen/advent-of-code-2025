@@ -60,7 +60,7 @@ long long part_two() {
       int largest{0};
       for (int j{start}; j<line.length(); ++j) {
         int num{line[j]-'0'};
-        auto space{bank_length-i<=line.length()-j};
+        bool space{bank_length-i<=line.length()-j};
         if (num>largest && space) {
           largest = num;
           start = j+1;
@@ -81,8 +81,3 @@ long long part_two() {
 
 
 }  // namespace day3
-
-int main() {
-  std::cout << day3::part_two() << "\n";
-  return 0;
-}

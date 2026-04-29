@@ -3,6 +3,7 @@
 #include <set>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 namespace day5 {
 
@@ -75,23 +76,60 @@ int part_one() {
   return fresh;
 }
 
-int part_two() {
-  auto file_data = read_file(FILENAME);
-  auto range_list = file_data.first;
-  auto ranges{pair_ranges(range_list)};
+bool comparison(std::pair<long long, long long> p1, std::pair<long long, long long> p2) {
+  return p1.first<p2.first;
+}
 
-  long long fresh{0};
-  std::set<int> fresh_ids{};
-  for (auto pair : ranges) {
-    long long low{pair.first};
-    long long high{pair.second};
-    for (int i = low; i <= high; i++) {
-      if (fresh_ids.count(i) == 0) {
-        fresh++;
-        fresh_ids.insert(i);
+int part_two() {
+  std::fstream input(FILENAME);
+  std::string line{};
+
+  std::vector<std::pair<long long, long long>> list{};
+
+  while (std::getline(input, line)) {
+    if (line=="") break;
+
+    auto pos {line.find('-')};
+    auto first{std::stoll(line.substr(0, pos))};
+    auto second{std::stoll(line.substr(pos+1))};
+    
+    list.push_back({first, second});
+  }
+  std::sort(list.begin(), list.end(), comparison);
+
+  std::vector<std::pair<long long, long long>> ranges{};
+  for (const auto& raw : list) {
+    bool mod{};
+    for (auto& range : ranges) {
+      if (raw.first>=range.first && raw.second<=range.second) {
+        mod = true;
+        break;
+      } else if (raw.first<range.first && raw.second>=range.first && raw.second<=range.second) {
+        range.first = raw.first;
+        mod = true;
+      } else if (raw.second>range.second && raw.first>=range.first && raw.first<=range.second) {
+        range.second = raw.second;
+        mod = true;
       }
     }
+    
+    if (!mod) {
+      ranges.push_back({raw.first, raw.second}); 
+    }
   }
+
+  long long fresh{};
+  for (auto p : ranges) {
+    fresh+=p.second-p.first+1;
+    //std::cout << p.first << "-" << p.second << "\n";
+  }
+  
   return fresh;
 }
 }  // namespace day5
+
+int main() {
+  std::cout << day5::part_one() << "\n";
+  std::cout << day5::part_two() << "\n";
+  return 0;
+}
