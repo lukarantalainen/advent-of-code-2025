@@ -4,88 +4,121 @@
 #include <string>
 #include <vector>
 
-bool check_repeating(long long num);
-
-std::vector<std::string> parse_string(const std::string& f) {
+std::vector<std::pair<std::string, std::string>> parse_string(const std::string& f) {
   std::fstream input(f);
   std::string line;
   std::getline(input, line);
-  std::vector<std::string> ranges;
+  std::vector<std::pair<std::string, std::string>> ranges;
 
-  int prev_delim{0};
   int length{0};
-  int char_index{0};
-  std::string range;
 
-  for (int i = 0; i <= line.length(); i++) {
-    char_index++;
-    if (line[i] == ',' || i == line.length()) {
-      range = line.substr(prev_delim, length);
-      ranges.push_back(range);
-      prev_delim = char_index;
+  std::pair<std::string, std::string> pair{};
+  for (int i = 0; i < line.length(); ++i) {
+    if (line[i] == '-') {
+      pair.first = line.substr(i-length, length);
       length = 0;
-    } else {
-      length++;
+    } else if (line[i] == ',') {
+      pair.second = line.substr(i-length, length);
+      ranges.push_back(pair);
+      pair = {};
+      length = 0;
+    } else if (i == line.length() - 1) {
+      pair.second = line.substr(i-length, length+1);
+      ranges.push_back(pair);
+    }
+     else {
+      ++length;
     }
   }
   return ranges;
 }
 
-std::vector<std::pair<std::string, std::string>> pair_values(
-    const std::vector<std::string>& input) {
-  std::vector<std::pair<std::string, std::string>> range_pairs;
-  for (std::string s : input) {
-    int char_index{0};
-    for (char c : s) {
-      char_index++;
-      if (c == '-') {
-        std::string first{s.substr(0, char_index)};
-        std::string last{s.substr(char_index)};
-        range_pairs.push_back(std::make_pair(first, last));
-      }
-    }
+bool check_double(long long num) {
+  
+  long long num_copy{num};
+  int num_length{};
+  while (num_copy>0) {
+    num_copy/=10;
+    ++num_length;
   }
-  return range_pairs;
+  if (num_length%2!=0) return 0;
+
+  long long a{};
+  long long b{};
+
+  int index{};
+  while (num>0) {
+    if (index<num_length/2) {
+      a*=10;
+      a+=num%10;
+    } else {
+      b*=10;
+      b+=num%10;
+    }
+    num/=10;
+    ++index;
+  }
+  return (a==b); 
 }
 
-bool check_repeating(long long num) {
-  std::string id = std::to_string(num);
-  bool repeating = false;
-  const int id_len = id.length();
+bool check_repeating(const long long &num) {
+  long long num_copy{num};
+  int num_length{};
+  while (num_copy>0) {
+    num_copy/=10;
+    ++num_length;
+  }
+  
+  for (int i{1}; i<=num_length/2; ++i) {
+    if (num_length%i!=0) continue;
 
-  for (int i = 1; i <= id_len / 2; i++) {
-    if (id_len % i != 0) continue;
-    std::string pattern = id.substr(0, i);
-    std::string counterpart{};
-    for (int j = 0; j < id_len / i; j++) {
-      counterpart.append(pattern);
+    int target{};
+    long long n{num};
+    
+    for (int j{0}; j<i; ++j) {
+      target*=10;
+      target+=n%10;
+      n/=10;
     }
-    if (id == counterpart) {
+
+    int test{};
+    int len{};
+    bool repeating{};
+    while (n>0) {
+      test*=10;
+      test+=n%10;
+      n/=10;
+      ++len;
+      if (len==i) {
+        if (test==target && test!=0) {
+          repeating = true;
+        } else {
+          repeating = false;
+          break;
+        }
+        test=0;
+        len=0;
+      }
+    }
+
+    if (repeating || test == target && test!=0) { 
       return true;
     }
   }
-  return repeating;
+  return false;
 }
 
 namespace day2 {
 const std::string FILENAME{"inputs/input02.txt"};
 long long part_one() {
-  auto input = pair_values(parse_string(FILENAME));
+  auto input = parse_string(FILENAME);
   long long total{0};
   for (auto p : input) {
     auto first = std::stoll(p.first);
     auto second = std::stoll(p.second);
-    for (long long i = first; i <= second; i++) {
-      auto id = std::to_string(i);
-      if (id.length() % 2 == 0) {
-        auto first_half = id.substr(0, id.length() / 2);
-        auto second_half = id.substr(id.length() / 2, id.length() / 2);
-
-        if (first_half == second_half) {
-          total += i;
-        }
-      } else {
-        continue;
+    for (auto i = first; i <= second; i++) {
+      if (check_double(i)) {
+        total += i;
       }
     }
   }
@@ -93,7 +126,7 @@ long long part_one() {
 }
 
 long long part_two() {
-  auto input = pair_values(parse_string(FILENAME));
+  auto input = parse_string(FILENAME);
   long long total{0};
   for (auto p : input) {
     long long first{std::stoll(p.first)};
@@ -107,3 +140,9 @@ long long part_two() {
   return total;
 }
 }  // namespace day2
+
+int main() {
+  std::cout << day2::part_one() << "\n";
+  std::cout << day2::part_two() << "\n";
+  return 0;
+}

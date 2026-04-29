@@ -78,6 +78,4 @@ long long part_two() {
   }
   return ans;
 }
-
-
 }  // namespace day3

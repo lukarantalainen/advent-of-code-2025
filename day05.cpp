@@ -121,7 +121,7 @@ long long part_two() {
   long long fresh{};
   for (auto p : ranges) {
     fresh+=p.second-p.first+1;
-    //std::cout << p.first << "-" << p.second << "\n";
+    std::cout << p.first << "-" << p.second << "\n";
   }
   
   return fresh;
