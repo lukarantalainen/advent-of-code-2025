@@ -62,15 +62,15 @@ bool check_double(long long num) {
 }
 
 bool check_repeating(const long long &num) {
-  long long num_copy{num};
-  int num_length{};
-  while (num_copy>0) {
-    num_copy/=10;
-    ++num_length;
+  long long copy{num};
+  int len{};
+  while (copy>0) {
+    copy/=10;
+    ++len;
   }
   
-  for (int i{1}; i<=num_length/2; ++i) {
-    if (num_length%i!=0) continue;
+  for (int i{1}; i<=len/2; ++i) {
+    if (len%i!=0) continue;
 
     int target{};
     long long n{num};

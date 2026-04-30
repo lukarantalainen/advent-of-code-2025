@@ -81,7 +81,7 @@ bool comparison(std::pair<long long, long long> p1, std::pair<long long, long lo
 }
 
 long long part_two() {
-  std::fstream input(FILENAME);
+  std::ifstream input(FILENAME);
   std::string line{};
 
   std::vector<std::pair<long long, long long>> list{};
