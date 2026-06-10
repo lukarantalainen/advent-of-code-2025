@@ -4,7 +4,7 @@
 #include <unordered_set>
 #include <vector>
 
-namespace Day07 {
+namespace day07 {
 const std::string FILENAME{"inputs/input07.txt"};
 long long part_one() {
     std::ifstream input(FILENAME);
@@ -55,10 +55,14 @@ long long part_one() {
     return beams;
 }
 
+long long part_two() {
+    
+}
+
 }
 
 int main()  {
-    std::cout << Day07::part_one() << "\n"; 
+    std::cout << day07::part_one() << "\n"; 
 
     return 0;
 }

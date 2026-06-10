@@ -2,6 +2,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <sstream>
+
 
 std::vector<std::vector<std::string>> parse_input(std::string filename) {
   std::fstream input(filename);
@@ -38,6 +40,8 @@ std::vector<std::vector<std::string>> parse_input(std::string filename) {
   return worksheet;
 }
 
+
+
 namespace day6 {
 const std::string FILENAME{"inputs/input06.txt"};
 long long part_one() {
@@ -60,4 +64,75 @@ long long part_one() {
   }
   return ans;
 }
+
+long long part_two() {
+  std::vector<std::string> worksheet;
+
+  std::string line;
+  std::ifstream input("inputs/input06.txt");
+  while (std::getline(input, line)) {
+    if (line == "") break;
+    worksheet.push_back(line);
+  }
+
+  const int n{static_cast<int>(worksheet.size())};
+  const int m{static_cast<int>(worksheet[0].length())};
+
+  long long total{};
+  
+  std::vector<int> nums;
+
+  char op{'\0'};
+  bool space{true};
+  for (int i{}; i < m; ++i) {
+    int sum{};
+    if (space) {
+      op = worksheet.back()[i];
+    }
+    space = true;
+    
+    
+    for (int j{}; j < (n - 1); ++j) {
+      if (worksheet[j][i] != ' ') {
+        sum *= 10;
+        sum += worksheet[j][i] - '0';
+        space = false;
+      }
+    }
+    nums.push_back(sum);
+    // for (auto num : nums) std::cout << num << " ";
+    // std::cout << "\n";
+
+    if (space || i == m-1) {
+      
+      long long count{0};
+      for (auto num : nums) {
+        
+        switch (op) {
+          case '+':
+          count += num;
+          break;
+          case '*':
+          if (count == 0) count = 1;
+          if (!num) continue;
+          count *= num;
+          break;  
+        }
+      }
+      total += count;
+      nums.clear();
+      op = '\0';
+    }
+  }
+
+  return total;
+}
 }  // namespace day6
+
+
+
+int main() {
+  std::cout << day6::part_two();
+  return 0;
+}
+
