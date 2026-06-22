@@ -1,14 +1,10 @@
 #include <iostream>
+#include <string>
 
 bool check_double(long long num) {
   if (num%2!=0) return 0;
-  int num_length{};
-  long long num_copy{num};
-  while (num>0) {
-    num/=10;
-    ++num_length;
-  }
-  if (num_length == 1) return 0;
+  int num_length{static_cast<int>(std::to_string(num).length())};
+  if (num_length == 1) return false;
 
   long long a{};
   long long b{};
@@ -29,14 +25,9 @@ bool check_double(long long num) {
   return (a==b); 
 }
 
-bool check_repeating(const long long &num) {
-
+bool check_repeating(const long long num) {
   long long num_copy{num};
-  int num_length{};
-  while (num_copy>0) {
-    num_copy/=10;
-    ++num_length;
-  }
+  int num_length{static_cast<int>(std::to_string(num).length())};
 
   for (int i{1}; i<=num_length/2; ++i) {
     if (num_length%i!=0) continue;
@@ -80,7 +71,10 @@ bool check_repeating(const long long &num) {
 
 int main() {
     std::cout << std::boolalpha;
-    std::cout << check_repeating(3444) << "\n";
+    long long num{};
+    std::cin >> num;
+    std::cout << check_double(num) << "\n";
+    std::cout << check_repeating(num) << "\n";
 
     return 0;
 }

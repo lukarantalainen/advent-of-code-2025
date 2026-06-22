@@ -3,6 +3,8 @@
 #include <string>
 #include <unordered_set>
 #include <vector>
+#include <set>
+#include <utility>
 
 namespace day07 {
 const std::string FILENAME{"inputs/input07.txt"};
@@ -55,14 +57,31 @@ long long part_one() {
     return beams;
 }
 
-long long part_two() {
+int traverse(std::vector<std::string> &grid, std::set<std::pair<int, int>> &seen, std::pair<int, int> point) {
+    int i{point.first};
+    int j{point.second};
+    bool valid{};
+    while (i < grid[0].size() && grid.size() < j) {
+        if (0 < i && i < grid[0].size()-1) {
+            if (grid[j][i-1] != '.' && !seen.count({j, i})) {
+                
+            }
+        }
+        seen.insert({j, i});
+
+    }
+    return valid + traverse(grid, seen, point);
     
 }
 
+long long part_two() {
+    return 0;
+}
 }
 
 int main()  {
     std::cout << day07::part_one() << "\n"; 
+
 
     return 0;
 }
