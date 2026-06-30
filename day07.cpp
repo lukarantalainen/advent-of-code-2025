@@ -8,7 +8,7 @@
 #include <utility>
 #include <vector>
 #include <queue>
-
+#include <numeric>
 namespace day07 {
 const std::string FILENAME{"inputs/input07.txt"};
 
@@ -66,55 +66,8 @@ long long part_one() {
   return count;
 }
 
-long long traverse(const std::vector<std::string>& grid, const Point start) {
-  long long count{};
-
-  std::queue<Point> path;
-  path.push(start);
-
-  std::vector<std::vector<bool>> visited;
-  visited.resize(grid.size(), std::vector<bool>(grid[0].size()));
-  assert(visited.size() == grid.size() && visited[0].size() == grid[0].size());
-
-  Point current{start};
-  while (current.y > 0) {  // do until walked back past the starting node
-    while (current.y + 2 < grid.size() &&
-           (!visited[current.y + 1][current.x + 1] ||
-            !visited[current.y + 1][current.x - 1])) {  // walk down
-      if (grid[current.y][current.x] == '^' &&
-          !visited[current.y + 1][current.x - 1]) {
-        current = {current.x - 1, current.y + 1};
-      } else if (grid[current.y][current.x] == '^' &&
-                 !visited[current.y + 1][current.x - 1]) {
-        current = {current.x - 1, current.y + 1};
-      } else {
-        ++current.y;
-      }
-      path.push(current);
-    }
-    ++count;
-
-
-    while (visited[current.y + 1][current.x + 1] &&
-           visited[current.y + 1][current.x - 1] || current.y+2 == grid.size()) {  // walk up
-      visited[current.y + 1][current.x + 1] = false;
-      visited[current.y + 1][current.x - 1] = false;
-      // backtracking so that future paths can still use these nodes
-      visited[current.y][current.x] = true;
-      current = path.back();
-      path.pop();
-    }
-    if (current == start) {
-      if (visited[current.y + 1][current.x + 1] &&
-          visited[current.y + 1][current.x - 1]) {
-        current.y = 0;
-      }
-    }
-  }
-  return count;
-}
-
 long long part_two() {
+  using namespace std;
   std::ifstream input("inputs/test.txt");
   std::string line;
   std::vector<std::string> grid;
@@ -125,7 +78,32 @@ long long part_two() {
 
   Point start{static_cast<int>(grid[0].find('S')), 1};
 
-  long long count{traverse(grid, start)};
+  auto grid_copy{grid};
+
+  string previous = grid[0];
+  std::vector<int> sum(grid[0].size());
+  sum[grid[0].find('S')] = 1;
+  for (int i = 1; i < grid.size(); ++i) {
+    for (int j = 1; j < grid[0].size()-1; ++j) {
+      if (grid[i][j] == '^') {
+        if (sum[j]) {
+          sum[j-1] += sum[j];
+          sum[j+1] += sum[j];
+          sum[j] = 0;
+        }
+        grid_copy[i][j-1] = '|';
+        grid_copy[i][j+1] = '|';
+      }
+      
+    }
+    for (auto l : grid_copy) {
+      std::cout << l << "\n";
+    }
+  }
+
+
+  
+  long long count = accumulate(sum.begin(), sum.end(), 0);
   return count;
 }
 }  // namespace day07
